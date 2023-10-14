@@ -1,5 +1,7 @@
 import { useState } from "react";
 import {
+  Box,
+  CssBaseline,
   Divider,
   Drawer,
   IconButton,
@@ -11,6 +13,7 @@ import {
   Typography,
 } from "@mui/material";
 import MuiAppBar from "@mui/material/AppBar";
+import PropTypes from "prop-types";
 
 import DashboardOutlinedIcon from "@mui/icons-material/DashboardOutlined";
 import PaymentOutlinedIcon from "@mui/icons-material/PaymentOutlined";
@@ -20,20 +23,23 @@ import LocalAtmOutlinedIcon from "@mui/icons-material/LocalAtmOutlined";
 import CategoryOutlinedIcon from "@mui/icons-material/CategoryOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 
+const drawerWidth = 240;
 import { styled, useTheme } from "@mui/material/styles";
 import DrawerHeader from "../drawer-header/DrawerHeader";
+import Main from "../main/Main";
+import { Outlet } from "react-router-dom";
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "open",
-})(({ theme, open, drawerwidth }) => ({
-  backgroundColor: "common",
+})(({ theme, open }) => ({
+  backgroundColor: "#040D12",
   transition: theme.transitions.create(["margin", "width"], {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
   ...(open && {
-    width: `calc(100% - ${drawerwidth}px)`,
-    marginLeft: `${drawerwidth}px`,
+    width: `calc(100% - ${drawerWidth}px)`,
+    marginLeft: `${drawerWidth}px`,
     transition: theme.transitions.create(["margin", "width"], {
       easing: theme.transitions.easing.easeOut,
       duration: theme.transitions.duration.enteringScreen,
@@ -41,7 +47,7 @@ const AppBar = styled(MuiAppBar, {
   }),
 }));
 
-const SideNav = ({ drawerWidth }) => {
+const SideNav = () => {
   const theme = useTheme();
 
   const navigations = [
@@ -52,13 +58,15 @@ const SideNav = ({ drawerWidth }) => {
   ];
 
   const [openSidebar, setOpenSidebar] = useState(true);
+
   const handleToggleSidebar = () => {
     setOpenSidebar(!openSidebar);
   };
 
   return (
-    <>
-      <AppBar position="fixed" open={openSidebar} drawerwidth={drawerWidth}>
+    <Box sx={{ display: "flex" }}>
+      <CssBaseline />
+      <AppBar position="fixed" open={openSidebar}>
         <Toolbar>
           <IconButton
             color="inherit"
@@ -74,7 +82,6 @@ const SideNav = ({ drawerWidth }) => {
           </Typography>
         </Toolbar>
       </AppBar>
-
       <Drawer
         className="side-bar"
         open={openSidebar}
@@ -110,8 +117,16 @@ const SideNav = ({ drawerWidth }) => {
           </MenuList>
         </Toolbar>
       </Drawer>
-    </>
+      <Main open={openSidebar} drawerwidth={drawerWidth}>
+        <DrawerHeader />
+        <Outlet />
+      </Main>
+    </Box>
   );
+};
+
+SideNav.propTypes = {
+  drawerWidth: PropTypes.number,
 };
 
 export default SideNav;

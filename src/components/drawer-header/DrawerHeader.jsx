@@ -1,7 +1,7 @@
-import React from "react";
 import { styled } from "@mui/material/styles";
+import PropTypes from "prop-types";
 
-const Drawer_Header = styled("div")(({ theme }) => ({
+const DrawerHeader_ = styled("div")(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   padding: theme.spacing(0, 1),
@@ -11,7 +11,11 @@ const Drawer_Header = styled("div")(({ theme }) => ({
 }));
 
 const DrawerHeader = ({ children }) => {
-  return <Drawer_Header>{children}</Drawer_Header>;
+  return <DrawerHeader_>{children}</DrawerHeader_>;
+};
+
+DrawerHeader.propTypes = {
+  children: PropTypes.any,
 };
 
 export default DrawerHeader;
