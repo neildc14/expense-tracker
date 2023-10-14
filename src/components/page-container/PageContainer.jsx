@@ -27,7 +27,7 @@ const drawerWidth = 240;
 import { styled, useTheme } from "@mui/material/styles";
 import DrawerHeader from "../drawer-header/DrawerHeader";
 import Main from "../main/Main";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "open",
@@ -49,16 +49,16 @@ const AppBar = styled(MuiAppBar, {
 
 const SideNav = () => {
   const theme = useTheme();
+  const navigate = useNavigate();
 
   const navigations = [
-    { text: "Dashboard", icon: <DashboardOutlinedIcon /> },
-    { text: "Expenses", icon: <PaymentOutlinedIcon /> },
-    { text: "Budget", icon: <LocalAtmOutlinedIcon /> },
-    { text: "Categories", icon: <CategoryOutlinedIcon /> },
+    { text: "Dashboard", icon: <DashboardOutlinedIcon />, link: "/dashboard" },
+    { text: "Expenses", icon: <PaymentOutlinedIcon />, link: "/expenses" },
+    { text: "Budget", icon: <LocalAtmOutlinedIcon />, link: "/budgets" },
+    { text: "Categories", icon: <CategoryOutlinedIcon />, link: "/categories" },
   ];
 
   const [openSidebar, setOpenSidebar] = useState(true);
-
   const handleToggleSidebar = () => {
     setOpenSidebar(!openSidebar);
   };
@@ -109,7 +109,10 @@ const SideNav = () => {
         <Toolbar variant="regular" sx={{ backgroundColor: "white" }}>
           <MenuList>
             {navigations?.map((navigation) => (
-              <MenuItem key={navigation.text}>
+              <MenuItem
+                key={navigation.text}
+                onClick={() => navigate(navigation.link)}
+              >
                 <ListItemIcon>{navigation.icon}</ListItemIcon>
                 <ListItemText>{navigation.text}</ListItemText>
               </MenuItem>
