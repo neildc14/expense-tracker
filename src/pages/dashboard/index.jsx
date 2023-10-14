@@ -1,14 +1,15 @@
 import React from "react";
-import Dashboard from "./Dashboard";
-import { Container } from "@mui/material";
+import DashBoard from "./DashBoard";
+import { Box, Container } from "@mui/material";
 import SideNav from "../../components/side-nav/SideNav";
 
 const Index = () => {
+  const drawerWidth = 240;
   return (
-    <Container>
-      {/* <SideNav /> */}
-      <Dashboard />
-    </Container>
+    <Box sx={{ display: "flex" }}>
+      <SideNav drawerWidth={drawerWidth} />
+      <DashBoard drawerWidth={drawerWidth} />
+    </Box>
   );
 };
 
