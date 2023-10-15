@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Box,
   CssBaseline,
@@ -11,6 +11,7 @@ import {
   MenuList,
   Toolbar,
   Typography,
+  useMediaQuery,
 } from "@mui/material";
 import MuiAppBar from "@mui/material/AppBar";
 import PropTypes from "prop-types";
@@ -32,7 +33,7 @@ import { Outlet, useNavigate } from "react-router-dom";
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "open",
 })(({ theme, open }) => ({
-  backgroundColor: "#040D12",
+  backgroundColor: "#773705",
   transition: theme.transitions.create(["margin", "width"], {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
@@ -50,6 +51,7 @@ const AppBar = styled(MuiAppBar, {
 const SideNav = () => {
   const theme = useTheme();
   const navigate = useNavigate();
+  const largeScreen = useMediaQuery("(min-width:768px)");
 
   const navigations = [
     { text: "Dashboard", icon: <DashboardOutlinedIcon />, link: "/dashboard" },
@@ -58,10 +60,18 @@ const SideNav = () => {
     { text: "Categories", icon: <CategoryOutlinedIcon />, link: "/categories" },
   ];
 
-  const [openSidebar, setOpenSidebar] = useState(true);
+  const [openSidebar, setOpenSidebar] = useState(false);
   const handleToggleSidebar = () => {
     setOpenSidebar(!openSidebar);
   };
+
+  useEffect(() => {
+    if (largeScreen) {
+      setOpenSidebar(true);
+      return;
+    }
+    setOpenSidebar(false);
+  }, [largeScreen]);
 
   return (
     <Box sx={{ display: "flex" }}>

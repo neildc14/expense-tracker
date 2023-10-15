@@ -5,3 +5,32 @@
 .side-bar {
   box-shadow: 1px;
 }
+
+.page-title {
+  font-size: 1.2rem !important;
+  // font-weight: 600 !important;
+  color: #183d3d;
+  text-align: center;
+}
+
+.primary-dashboard-card {
+  background-image: url("../images/dddepth-343.jpg");
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-color: #183d3d !important;
+  color: white !important;
+
+  & span {
+    color: white !important;
+  }
+}
+
+.dashboard-card {
+  & h4 {
+    font-size: 1.2rem;
+  }
+  & span {
+    font-size: 0.9rem;
+  }
+}
