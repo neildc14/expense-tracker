@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
 import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
   Box,
   CssBaseline,
   Divider,
@@ -23,6 +26,9 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import LocalAtmOutlinedIcon from "@mui/icons-material/LocalAtmOutlined";
 import CategoryOutlinedIcon from "@mui/icons-material/CategoryOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
+import FormatListBulletedOutlinedIcon from "@mui/icons-material/FormatListBulletedOutlined";
+import PlaylistAddOutlinedIcon from "@mui/icons-material/PlaylistAddOutlined";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 const drawerWidth = 240;
 import { styled, useTheme } from "@mui/material/styles";
@@ -48,14 +54,30 @@ const AppBar = styled(MuiAppBar, {
   }),
 }));
 
-const SideNav = () => {
+const PageContainer = () => {
   const theme = useTheme();
   const navigate = useNavigate();
   const largeScreen = useMediaQuery("(min-width:768px)");
 
   const navigations = [
     { text: "Dashboard", icon: <DashboardOutlinedIcon />, link: "/dashboard" },
-    { text: "Expenses", icon: <PaymentOutlinedIcon />, link: "/expenses" },
+    {
+      text: "Expenses",
+      icon: <PaymentOutlinedIcon />,
+      link: "/expenses",
+      sub_nav: [
+        {
+          text: "Expenses Breakdown",
+          icon: <FormatListBulletedOutlinedIcon />,
+          link: "/expenses",
+        },
+        {
+          text: "Add Expenses",
+          icon: <PlaylistAddOutlinedIcon />,
+          link: "/expenses/add",
+        },
+      ],
+    },
     { text: "Budget", icon: <LocalAtmOutlinedIcon />, link: "/budgets" },
     { text: "Categories", icon: <CategoryOutlinedIcon />, link: "/categories" },
   ];
@@ -100,6 +122,7 @@ const SideNav = () => {
         sx={{
           width: drawerWidth,
           flexShrink: 0,
+
           "& .MuiDrawer-paper": {
             width: drawerWidth,
             boxSizing: "border-box",
@@ -118,15 +141,57 @@ const SideNav = () => {
         <Divider />
         <Toolbar variant="regular" sx={{ backgroundColor: "white" }}>
           <MenuList>
-            {navigations?.map((navigation) => (
-              <MenuItem
-                key={navigation.text}
-                onClick={() => navigate(navigation.link)}
-              >
-                <ListItemIcon>{navigation.icon}</ListItemIcon>
-                <ListItemText>{navigation.text}</ListItemText>
-              </MenuItem>
-            ))}
+            {navigations?.map((navigation) =>
+              navigation.text !== "Expenses" ? (
+                <MenuItem
+                  key={navigation.text}
+                  onClick={() => {
+                    navigate(navigation.link);
+                    !largeScreen && handleToggleSidebar();
+                  }}
+                >
+                  <ListItemIcon>{navigation.icon}</ListItemIcon>
+                  <ListItemText>{navigation.text}</ListItemText>
+                </MenuItem>
+              ) : (
+                <Accordion
+                  key={navigation.text}
+                  disableGutters
+                  elevation={0}
+                  square
+                >
+                  <AccordionSummary
+                    expandIcon={<ExpandMoreIcon />}
+                    aria-controls="panel1a-content"
+                    id="panel1a-header"
+                  >
+                    <MenuItem
+                      key={navigation.text}
+                      disableGutters
+                      sx={{ width: 1 }}
+                    >
+                      <ListItemIcon>{navigation.icon}</ListItemIcon>
+                      <ListItemText>{navigation.text}</ListItemText>
+                    </MenuItem>
+                  </AccordionSummary>
+                  <AccordionDetails>
+                    {navigation.sub_nav.map((sub) => (
+                      <MenuItem
+                        key={sub.text}
+                        disableGutters
+                        onClick={() => {
+                          navigate(sub.link);
+                          !largeScreen && handleToggleSidebar();
+                        }}
+                      >
+                        <ListItemIcon>{sub.icon}</ListItemIcon>
+                        <ListItemText>{sub.text}</ListItemText>
+                      </MenuItem>
+                    ))}
+                  </AccordionDetails>
+                </Accordion>
+              )
+            )}
           </MenuList>
         </Toolbar>
       </Drawer>
@@ -138,8 +203,8 @@ const SideNav = () => {
   );
 };
 
-SideNav.propTypes = {
+PageContainer.propTypes = {
   drawerWidth: PropTypes.number,
 };
 
-export default SideNav;
+export default PageContainer;

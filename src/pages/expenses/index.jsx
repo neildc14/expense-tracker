@@ -1,12 +1,13 @@
 import React from "react";
-import Expenses from "./Expenses";
 
-const Index = () => {
+import { Outlet } from "react-router-dom";
+
+const Expenses = () => {
   return (
-    <div>
-      <Expenses />
-    </div>
+    <>
+      <Outlet />
+    </>
   );
 };
 
-export default Index;
+export default Expenses;
